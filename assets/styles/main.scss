@@ -1,20 +1,22 @@
-@import 'variables';
+@import './variables';
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
+* { 
+  margin: 0; 
+  padding: 0; 
+  box-sizing: border-box; 
+}
+ 
 body {
   font-family: $font-main;
   color: $color-text;
   background: $color-gray;
   line-height: 1.4;
 }
-
-a { text-decoration: none; color: inherit; }
-button { font-family: inherit; cursor: pointer; border: none; background: none; }
-img { max-width: 100%; display: block; }
-
 .container {
-  max-width: $container-width;
-  margin: 0 auto;
-  padding: 0 20px;
+  max-width: 1360px; /* Ширина контента */
+  margin: 0 auto;    /* Центрирование по горизонтали */
+  padding: 0 20px;   /* Отступы по бокам для мобильных устройств */
+  width: 100%;
 }
+
+/* ... остальные стили ... */

@@ -1,3 +1,9 @@
+<script setup>
+// Явно указываем Nuxt, откуда брать компоненты
+import HeaderTopBar from '~/components/header/HeaderTopBar.vue'
+import HeaderMainBar from '~/components/header/HeaderMainBar.vue'
+import HeaderHero from '~/components/header/HeaderHero.vue'
+</script>
 <template>
   <div class="app">
     <HeaderTopBar />
@@ -11,7 +17,7 @@
 </template>
 
 <style scoped lang="scss">
-@import '../../assets/styles/variables';
+
 
 .app {
   min-height: 100vh;
