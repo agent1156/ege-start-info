@@ -3,6 +3,7 @@
 import HeaderTopBar from '~/components/header/HeaderTopBar.vue'
 import HeaderMainBar from '~/components/header/HeaderMainBar.vue'
 import HeaderHero from '~/components/header/HeaderHero.vue'
+import AppFooter from '~/components/layout/AppFooter.vue'
 </script>
 <template>
   <div class="app">
@@ -13,6 +14,8 @@ import HeaderHero from '~/components/header/HeaderHero.vue'
     <main class="app__main">
       <slot />
     </main>
+    
+    <AppFooter />
   </div>
 </template>
 

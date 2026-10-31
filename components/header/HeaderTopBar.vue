@@ -77,4 +77,31 @@
 
   &:hover { background: darken($color-red, 10%); }
 }
+
+.top-bar__inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* АДАПТИВ */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+.top-bar__promo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 700;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 5px;
+    font-size: 14px;
+  }
+}
 </style>
