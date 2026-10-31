@@ -1,4 +1,62 @@
 @import './variables';
+/* =========================================
+   1. ПОДКЛЮЧЕНИЕ ШРИФТОВ
+   ========================================= */
+
+/* --- IBM Plex Mono (Локальные файлы) --- */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  src: url('/fonts/IBMPlexMono-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* --- ProggyVector Dotted (Пиксельный) --- */
+@font-face {
+  font-family: 'ProggyVectorDotted';
+  /* ВАЖНО: название файла должно точно совпадать с тем, что в папке public/fonts */
+  src: url('/fonts/ProggyVector-Dotted.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* =========================================
+   2. ГЛОБАЛЬНЫЕ СТИЛИ
+   ========================================= */
 
 * { 
   margin: 0; 
@@ -7,16 +65,24 @@
 }
  
 body {
-  font-family: $font-main;
+  /* Используем новые переменные, которые мы создали */
+  font-family: $font-text; /* Пиксельный шрифт для основного текста */
   color: $color-text;
   background: $color-gray;
   line-height: 1.4;
 }
-.container {
-  max-width: 1360px; /* Ширина контента */
-  margin: 0 auto;    /* Центрирование по горизонтали */
-  padding: 0 20px;   /* Отступы по бокам для мобильных устройств */
-  width: 100%;
+
+/* Применяем IBM Plex Mono ко всем заголовкам */
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
 }
 
-/* ... остальные стили ... */
+/* =========================================
+   3. КОНТЕЙНЕР
+   ========================================= */
+.container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 20px;
+  width: 100%;
+}
