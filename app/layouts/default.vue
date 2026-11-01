@@ -5,6 +5,7 @@ import AppHeader from '~/components/layout/AppHeader.vue'
 import HeaderHero from '~/components/header/HeaderHero.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
 
+
 </script>
 <template>
   <div class="app">
@@ -15,6 +16,7 @@ import AppFooter from '~/components/layout/AppFooter.vue'
 
     <main class="app__main">
        <HeaderHero />
+       <StudyMaterials />
       <slot />
     </main>
     
