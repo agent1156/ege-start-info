@@ -6,7 +6,10 @@
         <span class="badge-red">ВИТАЛИЕМ ТЕЧИЕВЫМ</span>
       </div>
       <div class="top-bar__right">
+        <!-- Если картинки нет, этот блок можно заменить на <div class="avatar-placeholder">ВТ</div> -->
         <img src="/images/teacher-small.png" alt="Виталий Течиев" class="top-bar__teacher" />
+        
+        <!-- Обновленная кнопка "Записаться" -->
         <button class="btn-red">Записаться</button>
       </div>
     </div>
@@ -53,6 +56,7 @@
     border-radius: 50%;
     object-fit: cover;
     background: #ccc;
+    border: 1px solid #ddd; /* Добавили тонкую аккуратную рамку */
   }
 }
 
@@ -66,42 +70,31 @@
   letter-spacing: 0.5px;
 }
 
+/* ===== ОБНОВЛЕННАЯ КНОПКА ===== */
 .btn-red {
-  background: $color-red;
+  background: #d32f2f;
   color: #fff;
-  padding: 10px 28px;
-  border-radius: 20px;
-  font-weight: 700;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-weight: 600;
   font-size: 14px;
-  transition: 0.3s;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.25);
+  cursor: pointer;
+  
+  /* УБИРАЕМ ОБВОДКУ */
+  border: none;
+  outline: none;
 
-  &:hover { background: darken($color-red, 10%); }
-}
-
-.top-bar__inner {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  /* АДАПТИВ */
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 10px;
-    text-align: center;
+  &:hover {
+    background: #b71c1c;
+    box-shadow: 0 4px 12px rgba(211, 47, 47, 0.4);
+    transform: translateY(-1px);
   }
-}
-
-.top-bar__promo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  font-weight: 700;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 5px;
-    font-size: 14px;
+  
+  /* Убираем обводку при клике */
+  &:focus {
+    outline: none;
   }
 }
 </style>

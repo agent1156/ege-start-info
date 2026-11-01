@@ -1,17 +1,20 @@
 <script setup>
 // Явно указываем Nuxt, откуда брать компоненты
 import HeaderTopBar from '~/components/header/HeaderTopBar.vue'
-import HeaderMainBar from '~/components/header/HeaderMainBar.vue'
+import AppHeader from '~/components/layout/AppHeader.vue'
 import HeaderHero from '~/components/header/HeaderHero.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
+
 </script>
 <template>
   <div class="app">
     <HeaderTopBar />
-    <HeaderMainBar />
-    <HeaderHero />
+    <AppHeader />
+   
+    
 
     <main class="app__main">
+       <HeaderHero />
       <slot />
     </main>
     

@@ -2,12 +2,13 @@
   <div class="main-bar">
     <div class="container main-bar__inner">
       
-      <!-- Логотип -->
+      <!-- Логотип слева -->
       <NuxtLink to="/" class="logo">
-        <img src="/images/logo.png" alt="IT START" />
+        <span class="logo__it">IT</span>
+        <span class="logo__start">START</span>
       </NuxtLink>
 
-      <!-- Темная панель меню -->
+      <!-- Меню и кнопка справа -->
       <div class="dark-panel">
         <nav class="dark-panel__links">
           <NuxtLink to="/ege">Курсы ЕГЭ</NuxtLink>
@@ -32,10 +33,9 @@
   &__inner {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 40px;
+    justify-content: space-between; /* Логотип слева, меню справа */
+    gap: 20px;
 
-    /* Планшеты и небольшие ноутбуки */
     @media (max-width: 992px) {
       flex-direction: column;
       gap: 20px;
@@ -44,11 +44,35 @@
 }
 
 .logo {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #111;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 4px;
+  line-height: 1;
+  text-decoration: none;
+  transition: transform 0.2s;
   flex-shrink: 0;
 
-  img { 
-    height: 50px; 
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &__it {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: -1px;
+  }
+
+  &__start {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #aaa;
+    margin-top: 2px;
   }
 }
 
@@ -58,19 +82,18 @@
   background: $color-dark;
   border-radius: 40px;
   padding: 6px 6px 6px 30px;
-  gap: 40px;
+  gap: 30px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 
-  /* Планшеты */
   @media (max-width: 992px) {
-    gap: 20px;
+    width: 100%;
+    justify-content: center;
   }
 
-  /* Мобильные телефоны */
   @media (max-width: 768px) {
     flex-direction: column;
     border-radius: 20px;
     padding: 15px;
-    width: 100%;
     gap: 15px;
   }
 
@@ -78,9 +101,8 @@
     display: flex;
     gap: 24px;
 
-    /* Мобильные телефоны */
     @media (max-width: 768px) {
-      flex-wrap: wrap; /* Ссылки переносятся на новую строку */
+      flex-wrap: wrap;
       justify-content: center;
       gap: 12px;
     }
@@ -90,9 +112,10 @@
       font-size: 14px;
       font-weight: 500;
       transition: 0.2s;
+      text-decoration: none;
 
-      &:hover { 
-        color: #ccc; 
+      &:hover {
+        color: #aaa;
       }
     }
   }
@@ -105,12 +128,19 @@
   border-radius: 30px;
   font-weight: 700;
   font-size: 14px;
-  border: 1px solid #555;
+  border: 1px solid #444;
   white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.3s;
+  flex-shrink: 0;
 
-  /* Мобильные телефоны */
+  &:hover {
+    background: #222;
+    border-color: #666;
+  }
+
   @media (max-width: 768px) {
-    width: 100%; /* Кнопка на всю ширину */
+    width: 100%;
   }
 }
 </style>
