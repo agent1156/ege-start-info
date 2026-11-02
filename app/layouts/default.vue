@@ -5,6 +5,7 @@ import HeaderHero from '~/components/header/HeaderHero.vue'
 import MaterialsSection from '~/components/sections/MaterialsSection.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
 import StartPath from '~/components/sections/StartPath.vue'
+import ContactForm from '~/components/sections/ContactForm.vue'
 </script>
 
 <template>
@@ -14,6 +15,7 @@ import StartPath from '~/components/sections/StartPath.vue'
     <HeaderHero />
     <MaterialsSection />
     <StartPath />
+    <ContactForm />
 
     <main class="app__main">
       <slot />
