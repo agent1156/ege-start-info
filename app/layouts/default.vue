@@ -4,6 +4,7 @@ import AppHeader from '~/components/layout/AppHeader.vue'
 import HeaderHero from '~/components/header/HeaderHero.vue'
 import MaterialsSection from '~/components/sections/MaterialsSection.vue'
 import AppFooter from '~/components/layout/AppFooter.vue'
+import StartPath from '~/components/sections/StartPath.vue'
 </script>
 
 <template>
@@ -12,6 +13,7 @@ import AppFooter from '~/components/layout/AppFooter.vue'
     <AppHeader />
     <HeaderHero />
     <MaterialsSection />
+    <StartPath />
 
     <main class="app__main">
       <slot />
