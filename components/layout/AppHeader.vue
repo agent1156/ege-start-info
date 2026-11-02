@@ -1,9 +1,5 @@
 <template>
   <header class="header">
-    
-    <!-- ===== ВЕРХНЯЯ ПОЛОСКА ===== -->
-
-
     <!-- ===== ОСНОВНОЕ МЕНЮ (ТЕМНАЯ ПАНЕЛЬ) ===== -->
     <div class="main-bar">
       <div class="container main-bar__inner">
