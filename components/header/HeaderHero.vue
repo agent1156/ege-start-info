@@ -51,12 +51,30 @@
     justify-content: space-between;
     overflow: hidden;
     min-height: 520px;
+
+    /* Планшеты и мобильные */
+    @media (max-width: 992px) {
+      flex-direction: column;
+      /* Меняем градиент на вертикальный */
+      background: linear-gradient(180deg, $color-light-blue 40%, $color-blue 100%);
+      padding: 40px 20px 0 20px; 
+      min-height: auto;
+    }
   }
 
   &__content {
     max-width: 650px;
     position: relative;
     z-index: 2;
+
+    /* Планшеты и мобильные */
+    @media (max-width: 992px) {
+      max-width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   &__subtitle {
@@ -67,6 +85,11 @@
     font-weight: 600;
     margin-bottom: 25px;
 
+    @media (max-width: 992px) {
+      justify-content: center;
+      font-size: 16px;
+    }
+
     &::after {
       content: '';
       display: block;
@@ -74,28 +97,52 @@
       height: 3px;
       background: $color-blue;
       margin-left: 10px;
+
+      @media (max-width: 992px) {
+        display: none;
+      }
     }
   }
 
   &__title {
     font-size: 64px;
-    line-height: 1.05;
+    line-height: 1.1;
     font-weight: 900;
     margin-bottom: 30px;
     letter-spacing: -1px;
+    word-wrap: break-word; /* Разрешаем перенос длинных слов */
+    overflow-wrap: break-word;
+
+    /* Планшеты */
+    @media (max-width: 992px) {
+      font-size: 40px;
+      line-height: 1.2;
+    }
+    /* Мобильные */
+    @media (max-width: 480px) {
+      font-size: 28px; /* Радикально уменьшаем на телефонах */
+    }
   }
 
   &__feature {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 15px;
     margin-bottom: 40px;
+
+    @media (max-width: 992px) {
+      margin-bottom: 30px;
+    }
 
     p {
       font-size: 16px;
       font-weight: 500;
       line-height: 1.4;
       color: #444;
+
+      @media (max-width: 480px) {
+        font-size: 14px;
+      }
     }
   }
 
@@ -114,6 +161,18 @@
       max-height: 100%;
       object-fit: contain;
     }
+
+    @media (max-width: 992px) {
+      position: relative; 
+      width: 100%;
+      height: auto;
+      margin-top: 20px;
+      justify-content: center;
+
+      img {
+        max-height: 300px; 
+      }
+    }
   }
 }
 
@@ -129,21 +188,29 @@
 .title-bg-blue {
   background: $color-blue;
   color: #fff;
-  padding: 0 16px;
+  padding: 0 12px;
   border-radius: 12px;
   display: inline-block;
   transform: rotate(-2deg);
   margin: 5px 0;
+
+  @media (max-width: 992px) {
+    transform: none; /* Убираем наклон на планшетах и телефонах */
+  }
 }
 
 .title-bg-light {
   background: #7cb0ff;
   color: $color-blue;
-  padding: 0 16px;
+  padding: 0 12px;
   border-radius: 12px;
   display: inline-block;
   transform: rotate(1deg);
   margin: 5px 0;
+
+  @media (max-width: 992px) {
+    transform: none; /* Убираем наклон на планшетах и телефонах */
+  }
 }
 
 .title-sub {
@@ -152,32 +219,63 @@
   display: block;
   margin-top: 15px;
   color: #333;
+
+  @media (max-width: 992px) {
+    font-size: 22px;
+  }
+  @media (max-width: 480px) {
+    font-size: 18px;
+  }
 }
 
 .cloud-icon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background: $color-blue;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
 }
 
 .btn-hero {
-  background: #6c83c7;
-  color: #fff;
+  background-color: #5c73db;
+  border: none; 
+  color: #ffffff;
   width: 100%;
   max-width: 500px;
   padding: 18px 30px;
-  border-radius: 40px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  transition: 0.3s;
+  font-family: $font-heading;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(92, 115, 219, 0.3);
 
-  &:hover { background: darken(#6c83c7, 10%); }
+  &:hover {
+    background-color: #4a5fc1;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(92, 115, 219, 0.5);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(92, 115, 219, 0.3);
+  }
+
+  @media (max-width: 480px) {
+    font-size: 13px;
+    padding: 15px 20px;
+    letter-spacing: 0; /* Убираем разрядку на узких экранах */
+  }
 }
 </style>
