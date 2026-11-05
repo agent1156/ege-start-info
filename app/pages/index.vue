@@ -1,6 +1,26 @@
 <template>
-  <section>
-    <h1>Тестовая главная страница12</h1>
-    <p>Если вы видите этот текст и шапку сверху — всё работает!</p>
-  </section>
+  <div>
+    <!-- Главный баннер -->
+    <HeaderHero />
+    
+    <!-- Обучающие материалы -->
+    <MaterialsSection />
+    
+    <!-- Начни свой путь -->
+    <StartPath />
+    
+    <!-- Блок с картинкой/баннером -->
+    <HeroBanner />
+    
+    <!-- Форма заявки -->
+    <ContactForm />
+  </div>
 </template>
+
+<script setup>
+import HeaderHero from '~/components/header/HeaderHero.vue'
+import MaterialsSection from '~/components/sections/MaterialsSection.vue' // Проверьте точное имя
+import StartPath from '~/components/sections/StartPath.vue'
+import HeroBanner from '~/components/sections/HeroBanner.vue' // Проверьте точное имя
+import ContactForm from '~/components/sections/ContactForm.vue'
+</script>
