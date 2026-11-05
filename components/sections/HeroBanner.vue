@@ -11,13 +11,6 @@
                 link="#"
             />
         </a>
-      <!-- Если не установлен @nuxt/image, используйте обычный тег <img>:
-      <img 
-        src="/images/hero-banner.jpg" 
-        alt="Полезные материалы для учителей по информатике" 
-        class="hero-image" 
-      />
-      -->
     </div>
   </section>
 </template>
@@ -35,12 +28,7 @@
   justify-content: center;
 }
 
-.container {
-  max-width: 1320px; /* Ограничиваем максимальную ширину */
-  width: 100%;
-  padding: 0 1rem;
-  margin: 0 auto;
-}
+
 
 .hero-image {
   width: 100%;

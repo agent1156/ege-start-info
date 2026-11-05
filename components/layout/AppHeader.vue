@@ -87,6 +87,12 @@
     gap: 15px;
   }
 }
+.container{
+      max-width: 1170px;
+    margin: 0 auto;
+    /* padding: 0 20px; */
+    width: 100%;
+}
 
 .avatar-placeholder {
   width: 40px;
