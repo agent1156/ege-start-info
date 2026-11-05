@@ -20,17 +20,25 @@
     <!-- ===== КНОПКИ ДЕЙСТВИЙ ===== -->
     <div class="task-card__actions">
       <button 
-        class="btn btn--blue" 
+        class="btn" 
         @click="showAnswer = !showAnswer"
       >
-        {{ showAnswer ? 'СКРЫТЬ ОТВЕТ' : 'ПОКАЗАТЬ ОТВЕТ' }}
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+        </svg>
+        {{ showAnswer ? 'Скрыть ответ' : 'Показать ответ' }}
       </button>
       
       <button 
-        class="btn btn--blue" 
+        class="btn btn--primary" 
         @click="showSolution = !showSolution"
       >
-        {{ showSolution ? 'СКРЫТЬ РЕШЕНИЕ' : 'ПОКАЗАТЬ РЕШЕНИЕ' }}
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        {{ showSolution ? 'Скрыть решение' : 'Показать решение' }}
       </button>
     </div>
 
@@ -91,8 +99,7 @@ const playVideo = () => {
   border-radius: 4px;
   padding: 24px;
   border: 1px solid #e2e8f0;
-  max-width: 900px;
-  margin: 0 auto 30px auto;
+  width: 100%; 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
 
   /* ===== БЕЙДЖИ ===== */
@@ -142,31 +149,53 @@ const playVideo = () => {
     }
   }
 
-  /* ===== КНОПКИ ===== */
+  /* ===== ОБНОВЛЕННЫЕ КНОПКИ ===== */
   &__actions {
     display: flex;
-    gap: 20px;
+    gap: 12px;
     margin-bottom: 20px;
   }
 
   .btn {
-    padding: 12px 30px;
-    border-radius: 4px;
+    /* Уменьшили padding */
+    padding: 8px 16px; 
+    border-radius: 8px; 
     font-family: $font-text;
-    font-size: 13px;
-    font-weight: 700;
+    font-size: 13px; 
+    font-weight: 600;
     cursor: pointer;
-    border: none;
-    transition: background-color 0.2s;
-    text-transform: uppercase;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Отступ между иконкой и текстом */
+    
+    /* Спокойный дизайн */
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
 
-    &--blue {
-      background-color: #7cb0ff;
-      color: #ffffff;
+    &:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      transform: translateY(-1px);
+    }
+
+    /* Акцентная кнопка */
+    &--primary {
+      color: #005bff;
+      border-color: #bfdbfe;
 
       &:hover {
-        background-color: #5c98e6;
+        border-color: #93c5fd;
+        background: #f0f7ff;
       }
+    }
+
+    /* Размер иконок */
+    svg {
+      width: 16px;
+      height: 16px;
     }
   }
 
@@ -236,6 +265,7 @@ const playVideo = () => {
 
     .btn {
       width: 100%;
+      justify-content: center;
     }
   }
 }
