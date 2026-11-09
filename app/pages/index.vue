@@ -14,6 +14,7 @@
     
     <!-- Форма заявки -->
     <ContactForm />
+    <ScheduleCalendar />
   </div>
 </template>
 
@@ -23,4 +24,5 @@ import MaterialsSection from '~/components/sections/MaterialsSection.vue' // П�
 import StartPath from '~/components/sections/StartPath.vue'
 import HeroBanner from '~/components/sections/HeroBanner.vue' // Проверьте точное имя
 import ContactForm from '~/components/sections/ContactForm.vue'
+import ScheduleCalendar from '~/components/schedule/ScheduleCalendar.vue'
 </script>
