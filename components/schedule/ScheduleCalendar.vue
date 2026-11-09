@@ -403,6 +403,9 @@ const getGroupsForDay = (date: Date) => {
 
 /* ===== АДАПТИВНОСТЬ ===== */
 @media (max-width: 768px) {
+    .schedule-section{
+        display: none;
+    }
   .schedule-header {
     padding: 16px;
     flex-direction: column;
