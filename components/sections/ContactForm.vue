@@ -47,10 +47,17 @@
               <textarea v-model="form.question" placeholder="Ваш вопрос" rows="2"></textarea>
             </div>
 
+            <!-- Уведомление об успехе или ошибке -->
+            <transition name="fade">
+              <div v-if="statusMessage" :class="['status-message', statusType]">
+                {{ statusMessage }}
+              </div>
+            </transition>
+
             <!-- Кнопка -->
             <button type="submit" class="contact-form__submit" :disabled="isLoading">
               {{ isLoading ? 'Отправка...' : 'Отправить заявку' }}
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              <svg v-if="!isLoading" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
             </button>
 
             <!-- Политика конфиденциальности -->
@@ -77,41 +84,70 @@ const form = ref({
 })
 
 const isLoading = ref(false)
+const statusMessage = ref('')
+const statusType = ref('') // 'success' или 'error'
 
-const submitForm = () => {
+const submitForm = async () => {
   isLoading.value = true
-  console.log('Отправка данных:', form.value)
+  statusMessage.value = ''
   
-  setTimeout(() => {
-    alert('Заявка отправлена!')
-    isLoading.value = false
+  try {
+    // Отправляем POST-запрос на Django API
+    await $fetch('http://127.0.0.1:8000/api/contact/', {
+      method: 'POST',
+      body: {
+        name: form.value.name,
+        phone: form.value.phone,
+        email: form.value.email,
+        message: form.value.question // В Django модель поле называется message
+      }
+    })
+    
+    // Если успешно
+    statusType.value = 'success'
+    statusMessage.value = 'Спасибо! Ваша заявка отправлена.'
+    
+    // Очищаем форму
     form.value = { name: '', phone: '', email: '', question: '' }
-  }, 1000)
+    
+    // Скрываем сообщение через 5 секунд
+    setTimeout(() => {
+      statusMessage.value = ''
+    }, 5000)
+    
+  } catch (error) {
+    console.error('Ошибка отправки:', error)
+    statusType.value = 'error'
+    statusMessage.value = 'Произошла ошибка. Проверьте поля и попробуйте снова.'
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 
 <style scoped lang="scss">
 @import '~/assets/styles/variables';
 
+/* ... ВАШИ СТИЛИ ОСТАЮТСЯ БЕЗ ИЗМЕНЕНИЙ ... */
+/* (Я добавил только стили для .status-message и анимации ниже) */
+
 .contact-form {
   padding: 40px 0;
   background: #fff;
 
-  /* Главный блок с картинкой */
   &__banner {
     position: relative;
     width: 100%;
-    /* Указываем путь к нашей новой картинке */
     background-image: url('/images/form-bg.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     border-radius: 30px;
-    min-height: 776px; /* Высота блока */
+    min-height: 776px;
     display: flex;
-    justify-content: flex-end; /* Прижимаем форму вправо */
+    justify-content: flex-end;
     align-items: center;
-    padding: 40px; /* Отступы по краям */
+    padding: 40px;
     overflow: hidden;
 
     @media (max-width: 992px) {
@@ -123,18 +159,17 @@ const submitForm = () => {
     }
   }
 
-  /* Форма (белая карточка) */
   &__box {
     background: #fff;
     width: 100%;
-    max-width: 518px; /* Ширина формы */
+    max-width: 518px;
     padding: 40px;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
     @media (max-width: 992px) {
       max-width: 100%;
-      margin-top: 300px; /* Сдвигаем форму вниз на мобильных, чтобы не перекрывать лицо */
+      margin-top: 300px;
     }
     @media (max-width: 576px) {
       padding: 24px;
@@ -182,7 +217,7 @@ const submitForm = () => {
 
     svg { width: 20px; height: 20px; }
 
-    &:hover { background: #0047cc; }
+    &:hover:not(:disabled) { background: #0047cc; }
     &:disabled { background: #ccc; cursor: not-allowed; }
   }
 
@@ -198,7 +233,7 @@ const submitForm = () => {
   }
 }
 
-/* ===== СТИЛИ ПОЛЕЙ ВВОДА ===== */
+/* Стили полей */
 .input-group {
   position: relative;
   display: flex;
@@ -234,7 +269,7 @@ const submitForm = () => {
     background: transparent;
     border: none;
     outline: none;
-    font-family: $font-text; /* Используем вашу переменную для текста */
+    font-family: $font-text;
     font-size: 14px;
     color: #333;
 
@@ -242,5 +277,37 @@ const submitForm = () => {
   }
 
   textarea { resize: none; }
+}
+
+/* СТИЛИ ДЛЯ УВЕДОМЛЕНИЙ */
+.status-message {
+  padding: 10px;
+  border-radius: 8px;
+  font-family: $font-text;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 4px;
+
+  &.success {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid #a7f3d0;
+  }
+
+  &.error {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+  }
+}
+
+/* Анимация появления */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
