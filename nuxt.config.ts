@@ -1,4 +1,3 @@
-
 import { fileURLToPath } from 'node:url'
 
 export default defineNuxtConfig({
@@ -11,6 +10,12 @@ export default defineNuxtConfig({
   alias: {
     '~': fileURLToPath(new URL('./', import.meta.url)),
     '@': fileURLToPath(new URL('./', import.meta.url))
-  }
+  },
 
+  // ДОБАВЛЯЕМ БЛОК С НАСТРОЙКАМИ API
+  runtimeConfig: {
+    public: {
+      apiBase: 'http://127.0.0.1:8000', // Адрес вашего Django сервера
+    },
+  },
 })

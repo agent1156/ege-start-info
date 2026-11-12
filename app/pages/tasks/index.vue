@@ -8,23 +8,32 @@
         <p>27 заданий · справочник тем · шкала оценивания</p>
       </header>
 
+      <!-- ===== СОСТОЯНИЯ ЗАГРУЗКИ ===== -->
+      <div v-if="pending" class="state">
+        Загрузка данных с сервера...
+      </div>
+      
+      <div v-else-if="error" class="state state--error">
+        Ошибка загрузки. Проверьте, запущен ли Django на порту 8000.
+      </div>
+
       <!-- ===== СЕТКА КАРТОЧЕК ===== -->
-      <div class="grid">
-        <a
-          v-for="t in TASKS"
+      <div v-else class="grid">
+        <NuxtLink
+          v-for="t in tasks"
           :key="t.number"
           class="task-card"
-          :href="`/tasks/${t.number}`"
-          :aria-label="`Задание ${t.number}: ${t.topic}. ${t.score} ${scoreWord(t.score)}`"
+          :to="`/tasks/${t.slug}`" 
+          :aria-label="`Задание ${t.number}: ${t.topic}. ${t.max_score} ${scoreWord(t.max_score)}`"
         >
           <div class="card__top">
             <div class="card__num">{{ String(t.number).padStart(2, '0') }}</div>
-            <div class="card__score" :class="`s-${t.score}`">
-              <strong>{{ t.score }}</strong>{{ scoreWord(t.score) }}
+            <div class="card__score" :class="`s-${t.max_score}`">
+              <strong>{{ t.max_score }}</strong>{{ scoreWord(t.max_score) }}
             </div>
           </div>
           <div class="card__topic">{{ t.topic }}</div>
-        </a>
+        </NuxtLink>
       </div>
 
       <!-- ===== ЛЕГЕНДА ===== -->
@@ -47,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-// SEO для страницы
+// 1. SEO для страницы
 useHead({
   title: 'Задания ЕГЭ по информатике — 27 заданий',
   meta: [
@@ -55,38 +64,23 @@ useHead({
   ]
 })
 
-// ===== ДАННЫЕ (27 заданий) =====
-const TASKS = [
-  { number: 1,  topic: 'Анализ информационных моделей (графы, таблицы)', score: 1 },
-  { number: 2,  topic: 'Построение таблиц истинности логических выражений', score: 1 },
-  { number: 3,  topic: 'Поиск информации в реляционных базах данных', score: 1 },
-  { number: 4,  topic: 'Кодирование и декодирование. Условие Фано', score: 1 },
-  { number: 5,  topic: 'Анализ алгоритмов для исполнителей', score: 1 },
-  { number: 6,  topic: 'Анализ программ (циклы, условия)', score: 1 },
-  { number: 7,  topic: 'Кодирование графической и звуковой информации', score: 1 },
-  { number: 8,  topic: 'Комбинаторика, перебор слов и комбинаций', score: 1 },
-  { number: 9,  topic: 'Электронные таблицы (обработка данных)', score: 1 },
-  { number: 10, topic: 'Поиск и сортировка в текстовых документах', score: 1 },
-  { number: 11, topic: 'Вычисление количества информации', score: 1 },
-  { number: 12, topic: 'Алгоритмы для исполнителя. Замена символов', score: 2 },
-  { number: 13, topic: 'IP-адресация в сетях. Маска подсети', score: 1 },
-  { number: 14, topic: 'Позиционные системы счисления', score: 1 },
-  { number: 15, topic: 'Логические уравнения и преобразования', score: 2 },
-  { number: 16, topic: 'Рекуррентные соотношения и рекурсия', score: 1 },
-  { number: 17, topic: 'Обработка целочисленной информации', score: 2 },
-  { number: 18, topic: 'Анализ алгоритмов. Динамическое программирование', score: 2 },
-  { number: 19, topic: 'Теория игр. Одна куча (выигрышная стратегия)', score: 1 },
-  { number: 20, topic: 'Теория игр. Одна куча (два хода)', score: 1 },
-  { number: 21, topic: 'Теория игр. Одна куча (три хода)', score: 1 },
-  { number: 22, topic: 'Анализ многопоточных вычислений', score: 1 },
-  { number: 23, topic: 'Динамическое программирование. Подсчёт путей', score: 1 },
-  { number: 24, topic: 'Обработка символьной информации', score: 2 },
-  { number: 25, topic: 'Обработка целочисленной информации (перебор)', score: 2 },
-  { number: 26, topic: 'Обработка данных. Сортировка, поиск', score: 3 },
-  { number: 27, topic: 'Программирование. Сложные алгоритмы', score: 4 },
-]
+// 2. Получаем настройки API
+const config = useRuntimeConfig()
 
-// Функция для склонения слова "балл"
+// 3. Интерфейс, описывающий ответ от Django
+interface TaskNumber {
+  number: number
+  topic: string
+  max_score: number
+  slug: string
+}
+
+// 4. Загружаем данные с бэкенда
+const { data: tasks, pending, error } = await useFetch<TaskNumber[]>(
+  `${config.public.apiBase}/api/task-numbers/`
+)
+
+// 5. Функция для склонения слова "балл"
 const scoreWord = (n: number) => {
   const mod10 = n % 10
   const mod100 = n % 100
@@ -106,10 +100,10 @@ const scoreWord = (n: number) => {
   --card-hover: #f8fafc;
   --border: #e2e8f0;
   --border-strong: #cbd5e1;
-  --ink: #0f172a;          /* Темно-синий, почти черный */
-  --ink-soft: #475569;     /* Серый для текста */
+  --ink: #0f172a;
+  --ink-soft: #475569;
   --muted: #94a3b8;
-  --accent: #2563eb;       /* Синий акцент */
+  --accent: #2563eb;
   
   --font-text: 'ProggyVectorDotted', ui-monospace, 'Courier New', monospace;
   --font-head: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace;
@@ -166,6 +160,24 @@ const scoreWord = (n: number) => {
 }
 
 /* =========================================
+   СОСТОЯНИЯ
+   ========================================= */
+.state {
+  padding: 40px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-family: var(--font-head);
+  background: #f8fafc;
+  border-radius: 8px;
+  border: 1px dashed var(--border);
+}
+.state--error {
+  color: #ef4444;
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+/* =========================================
    СЕТКА КАРТОЧЕК
    ========================================= */
 .grid {
@@ -183,7 +195,7 @@ const scoreWord = (n: number) => {
   padding: 18px 16px 16px;
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 8px; /* Чуть скруглили для современного вида */
+  border-radius: 8px;
   text-decoration: none;
   color: inherit;
   cursor: pointer;
@@ -196,12 +208,6 @@ const scoreWord = (n: number) => {
   border-color: var(--border-strong);
   transform: translateY(-2px);
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.06);
-}
-
-.task-card:focus-visible {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .card__top {
@@ -219,7 +225,7 @@ const scoreWord = (n: number) => {
   font-size: 28px;
   font-weight: 700;
   line-height: 1;
-  color: var(--accent); /* Номер задания теперь синий */
+  color: var(--accent);
 }
 
 .card__score {
@@ -232,11 +238,11 @@ const scoreWord = (n: number) => {
   white-space: nowrap;
 }
 
-/* Цвета баллов в стиле Tailwind */
-.card__score.s-1 { color: #94a3b8; } /* slate-400 */
-.card__score.s-2 { color: #10b981; } /* emerald-500 */
-.card__score.s-3 { color: #f59e0b; } /* amber-500 */
-.card__score.s-4 { color: #ef4444; } /* red-500 */
+/* Цвета баллов */
+.card__score.s-1 { color: #94a3b8; }
+.card__score.s-2 { color: #10b981; }
+.card__score.s-3 { color: #f59e0b; }
+.card__score.s-4 { color: #ef4444; }
 
 .card__score strong {
   font-size: 14px;

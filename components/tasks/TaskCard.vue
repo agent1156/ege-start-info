@@ -3,7 +3,7 @@
     
     <!-- ===== ШАПКА С БЕЙДЖАМИ ===== -->
     <div class="task-card__badges">
-      <span class="badge badge--green">№ {{ task.id }}</span>
+      <span class="badge badge--green">№ {{ task.externalId  }}</span>
       <span class="badge badge--blue">{{ task.examType }} | {{ task.year }}</span>
     </div>
 
