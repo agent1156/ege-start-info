@@ -11,7 +11,7 @@
     <div class="task-card__content">
       <p class="task-card__text">{{ task.text }}</p>
       
-      <!-- Картинка к задаче (выравнивание по левому краю) -->
+      <!-- Картинка к задаче -->
       <div v-if="task.image" class="task-card__media">
         <img :src="task.image" :alt="'Задача №' + task.externalId" class="task-image" />
       </div>
@@ -31,7 +31,7 @@
         {{ showAnswer ? 'Скрыть ответ' : 'Показать ответ' }}
       </button>
       
-      <!-- Кнопка "Показать решение" (выводится только если есть видео) -->
+      <!-- Кнопка "Показать решение" (только если есть видео) -->
       <button 
         v-if="task.videoUrl"
         class="btn btn--primary" 
@@ -51,7 +51,6 @@
     </div>
 
     <!-- ===== БЛОК РЕШЕНИЯ (ВИДЕО) ===== -->
-    <!-- Показываем только если есть видео и пользователь нажал "Показать решение" -->
     <div v-if="showSolution && task.videoUrl" class="task-card__video-box">
       <div class="video-placeholder" @click="playVideo">
         <button class="play-btn" aria-label="Воспроизвести видео">
@@ -62,13 +61,29 @@
       </div>
     </div>
 
+    <!-- ===== БЛОК ПРИКРЕПЛЕННОГО ФАЙЛА ===== -->
+    <!-- Выводим его только если есть файл -->
+    <div v-if="task.attachment" class="task-card__attachment-box">
+      <span class="attachment-label">Файл для решения:</span>
+      <a 
+        :href="task.attachment" 
+        download
+        target="_blank"
+        class="attachment-link"
+      >
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+        </svg>
+        {{ getFileName(task.attachment) }}
+      </a>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
 
-// ===== ПРИНИМАЕМ ДАННЫЕ ИЗ БАЗЫ =====
 const props = defineProps<{
   task: {
     id: number
@@ -79,18 +94,24 @@ const props = defineProps<{
     image?: string
     answer: string
     videoUrl?: string
+    attachment?: string // <-- Поле для файла
   }
 }>()
 
-// Состояния для кнопок
 const showAnswer = ref(false)
 const showSolution = ref(false)
 
-// Открытие видео
 const playVideo = () => {
   if (props.task.videoUrl) {
     window.open(props.task.videoUrl, '_blank')
   }
+}
+
+// Функция для извлечения имени файла из ссылки (например, 3-198.ods)
+const getFileName = (url: string) => {
+  if (!url) return ''
+  const parts = url.split('/')
+  return parts[parts.length - 1]
 }
 </script>
 
@@ -104,6 +125,8 @@ const playVideo = () => {
   border: 1px solid #e2e8f0;
   width: 100%; 
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
 
   /* ===== БЕЙДЖИ ===== */
   &__badges {
@@ -137,13 +160,14 @@ const playVideo = () => {
     line-height: 1.6;
     color: #333;
     margin-bottom: 24px;
+    white-space: pre-line; 
   }
 
-  /* ===== КАРТИНКА (ВЫРАВНИВАНИЕ ПО ЛЕВОМУ КРАЮ) ===== */
+  /* ===== КАРТИНКА ===== */
   &__media {
-    margin-bottom: 30px;
+    margin-bottom: 24px;
     display: flex;
-    justify-content: flex-start; /* Изменено с center на flex-start */
+    justify-content: flex-start;
     
     .task-image {
       max-width: 100%;
@@ -251,6 +275,46 @@ const playVideo = () => {
       margin-left: 6px; 
     }
   }
+
+  /* ===== БЛОК ФАЙЛА ===== */
+  &__attachment-box {
+    margin-top: 10px;
+    padding-top: 16px;
+    border-top: 1px dashed #e2e8f0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: $font-text;
+    font-size: 14px;
+  }
+
+  .attachment-label {
+    color: #64748b;
+    font-weight: 500;
+  }
+
+  .attachment-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 600;
+    background: #eff6ff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    &:hover {
+      background: #dbeafe;
+      text-decoration: underline;
+    }
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 }
 
 /* ===== АДАПТИВНОСТЬ ===== */
@@ -265,6 +329,12 @@ const playVideo = () => {
     .btn {
       width: 100%;
       justify-content: center;
+    }
+    
+    &__attachment-box {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
     }
   }
 }

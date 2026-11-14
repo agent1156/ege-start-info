@@ -95,7 +95,8 @@ const tasks = computed(() => {
     difficulty: 'Средний', 
     text: t.text,
     image: t.image,
-    answer: t.answer
+    answer: t.answer,
+    attachment: t.attachment
   }))
 })
 
