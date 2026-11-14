@@ -3,7 +3,7 @@
     
     <!-- ===== ШАПКА С БЕЙДЖАМИ ===== -->
     <div class="task-card__badges">
-      <span class="badge badge--green">№ {{ task.externalId  }}</span>
+      <span class="badge badge--green">№ {{ task.externalId }}</span>
       <span class="badge badge--blue">{{ task.examType }} | {{ task.year }}</span>
     </div>
 
@@ -11,14 +11,15 @@
     <div class="task-card__content">
       <p class="task-card__text">{{ task.text }}</p>
       
-      <!-- Картинка к задаче (таблица, граф и т.д.) -->
+      <!-- Картинка к задаче (выравнивание по левому краю) -->
       <div v-if="task.image" class="task-card__media">
-        <img :src="task.image" :alt="'Задача №' + task.id" class="task-image" />
+        <img :src="task.image" :alt="'Задача №' + task.externalId" class="task-image" />
       </div>
     </div>
 
     <!-- ===== КНОПКИ ДЕЙСТВИЙ ===== -->
     <div class="task-card__actions">
+      <!-- Кнопка "Показать ответ" -->
       <button 
         class="btn" 
         @click="showAnswer = !showAnswer"
@@ -30,7 +31,9 @@
         {{ showAnswer ? 'Скрыть ответ' : 'Показать ответ' }}
       </button>
       
+      <!-- Кнопка "Показать решение" (выводится только если есть видео) -->
       <button 
+        v-if="task.videoUrl"
         class="btn btn--primary" 
         @click="showSolution = !showSolution"
       >
@@ -48,7 +51,8 @@
     </div>
 
     <!-- ===== БЛОК РЕШЕНИЯ (ВИДЕО) ===== -->
-    <div v-if="showSolution" class="task-card__video-box">
+    <!-- Показываем только если есть видео и пользователь нажал "Показать решение" -->
+    <div v-if="showSolution && task.videoUrl" class="task-card__video-box">
       <div class="video-placeholder" @click="playVideo">
         <button class="play-btn" aria-label="Воспроизвести видео">
           <svg viewBox="0 0 24 24" fill="currentColor">
@@ -68,6 +72,7 @@ import { ref } from 'vue'
 const props = defineProps<{
   task: {
     id: number
+    externalId: number
     examType: string
     year: number
     text: string
@@ -81,12 +86,10 @@ const props = defineProps<{
 const showAnswer = ref(false)
 const showSolution = ref(false)
 
-// Заглушка для видео (позже можно вставить открытие модалки или iframe)
+// Открытие видео
 const playVideo = () => {
   if (props.task.videoUrl) {
     window.open(props.task.videoUrl, '_blank')
-  } else {
-    alert('Видео-решение скоро появится!')
   }
 }
 </script>
@@ -136,11 +139,11 @@ const playVideo = () => {
     margin-bottom: 24px;
   }
 
-  /* ===== КАРТИНКА ===== */
+  /* ===== КАРТИНКА (ВЫРАВНИВАНИЕ ПО ЛЕВОМУ КРАЮ) ===== */
   &__media {
     margin-bottom: 30px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start; /* Изменено с center на flex-start */
     
     .task-image {
       max-width: 100%;
@@ -149,7 +152,7 @@ const playVideo = () => {
     }
   }
 
-  /* ===== ОБНОВЛЕННЫЕ КНОПКИ ===== */
+  /* ===== КНОПКИ ===== */
   &__actions {
     display: flex;
     gap: 12px;
@@ -157,7 +160,6 @@ const playVideo = () => {
   }
 
   .btn {
-    /* Уменьшили padding */
     padding: 8px 16px; 
     border-radius: 8px; 
     font-family: $font-text;
@@ -167,9 +169,8 @@ const playVideo = () => {
     transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
-    gap: 6px; /* Отступ между иконкой и текстом */
+    gap: 6px; 
     
-    /* Спокойный дизайн */
     background: #ffffff;
     border: 1px solid #e2e8f0;
     color: #334155;
@@ -181,7 +182,6 @@ const playVideo = () => {
       transform: translateY(-1px);
     }
 
-    /* Акцентная кнопка */
     &--primary {
       color: #005bff;
       border-color: #bfdbfe;
@@ -192,7 +192,6 @@ const playVideo = () => {
       }
     }
 
-    /* Размер иконок */
     svg {
       width: 16px;
       height: 16px;

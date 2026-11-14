@@ -30,13 +30,7 @@
         </select>
       </div>
 
-      <div class="filter-item">
-        <label>Номер задания</label>
-        <select v-model="filters.taskNumber">
-          <option value="">Все</option>
-          <option v-for="num in 27" :key="num" :value="num">{{ num }}</option>
-        </select>
-      </div>
+      
 
       <div class="filter-item filter-item--btn">
         <button class="btn-apply" @click="$emit('apply', filters)">Применить</button>
