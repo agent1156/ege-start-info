@@ -4,7 +4,19 @@
     <!-- ===== ШАПКА С БЕЙДЖАМИ ===== -->
     <div class="task-card__badges">
       <span class="badge badge--green">№ {{ task.externalId }}</span>
-      <span class="badge badge--blue">{{ task.examType }} | {{ task.year }}</span>
+      
+      <!-- Синяя плашка: тип и год (если это не олимпиада) -->
+      <span class="badge badge--blue">
+  <!-- Если пришла Олимпиада, пишем только Олимпиада -->
+  <template v-if="task.examType === 'Олимпиада'">
+    Олимпиада
+  </template>
+  
+  <!-- Во всех остальных случаях (ЕГЭ) пишем ЕГЭ + год (если есть) -->
+  <template v-else>
+    ЕГЭ <template v-if="task.year"> | {{ task.year }}</template>
+  </template>
+</span>
     </div>
 
     <!-- ===== ТЕКСТ УСЛОВИЯ ===== -->
@@ -62,17 +74,17 @@
     </div>
 
     <!-- ===== БЛОК ПРИКРЕПЛЕННОГО ФАЙЛА ===== -->
-    <!-- Выводим его только если есть файл -->
     <div v-if="task.attachment" class="task-card__attachment-box">
-      <span class="attachment-label">Файл для решения:</span>
+      <span class="attachment-label">Скачать файл:</span>
       <a 
         :href="task.attachment" 
         download
         target="_blank"
         class="attachment-link"
+        :title="'Скачать ' + getFileName(task.attachment)"
       >
         <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
         </svg>
         {{ getFileName(task.attachment) }}
       </a>
@@ -94,7 +106,7 @@ const props = defineProps<{
     image?: string
     answer: string
     videoUrl?: string
-    attachment?: string // <-- Поле для файла
+    attachment?: string
   }
 }>()
 
@@ -107,7 +119,7 @@ const playVideo = () => {
   }
 }
 
-// Функция для извлечения имени файла из ссылки (например, 3-198.ods)
+// Извлекаем имя файла из ссылки (например, 3-198.ods)
 const getFileName = (url: string) => {
   if (!url) return ''
   const parts = url.split('/')
@@ -120,7 +132,7 @@ const getFileName = (url: string) => {
 
 .task-card {
   background: #ffffff;
-  border-radius: 4px;
+  border-radius: 8px; /* Сделал чуть больше скругление */
   padding: 24px;
   border: 1px solid #e2e8f0;
   width: 100%; 
@@ -278,7 +290,7 @@ const getFileName = (url: string) => {
 
   /* ===== БЛОК ФАЙЛА ===== */
   &__attachment-box {
-    margin-top: 10px;
+    margin-top: 16px;
     padding-top: 16px;
     border-top: 1px dashed #e2e8f0;
     display: flex;
