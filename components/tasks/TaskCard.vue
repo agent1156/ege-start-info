@@ -7,16 +7,16 @@
       
       <!-- Синяя плашка: тип и год (если это не олимпиада) -->
       <span class="badge badge--blue">
-  <!-- Если пришла Олимпиада, пишем только Олимпиада -->
-  <template v-if="task.examType === 'Олимпиада'">
-    Олимпиада
-  </template>
-  
-  <!-- Во всех остальных случаях (ЕГЭ) пишем ЕГЭ + год (если есть) -->
-  <template v-else>
-    ЕГЭ <template v-if="task.year"> | {{ task.year }}</template>
-  </template>
-</span>
+        <!-- Если пришла Олимпиада, пишем только Олимпиада -->
+        <template v-if="task.examType === 'Олимпиада'">
+          Олимпиада
+        </template>
+        
+        <!-- Во всех остальных случаях (ЕГЭ) пишем ЕГЭ + год (если есть) -->
+        <template v-else>
+          ЕГЭ <template v-if="task.year"> | {{ task.year }}</template>
+        </template>
+      </span>
     </div>
 
     <!-- ===== ТЕКСТ УСЛОВИЯ ===== -->
@@ -59,7 +59,7 @@
 
     <!-- ===== БЛОК ОТВЕТА ===== -->
     <div v-if="showAnswer" class="task-card__answer-box">
-      <span>Ответ: <strong>{{ task.answer }}</strong></span>
+      <span>Ответ: <strong v-html="formatAnswer(task.answer)"></strong></span>
     </div>
 
     <!-- ===== БЛОК РЕШЕНИЯ (ВИДЕО) ===== -->
@@ -125,6 +125,12 @@ const getFileName = (url: string) => {
   const parts = url.split('/')
   return parts[parts.length - 1]
 }
+
+// Функция для замены сырых <br/> на реальные переносы HTML
+const formatAnswer = (text: string) => {
+  if (!text) return ''
+  return text.replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/<br\s*\/?>/gi, '<br>')
+}
 </script>
 
 <style scoped lang="scss">
@@ -132,7 +138,7 @@ const getFileName = (url: string) => {
 
 .task-card {
   background: #ffffff;
-  border-radius: 8px; /* Сделал чуть больше скругление */
+  border-radius: 8px;
   padding: 24px;
   border: 1px solid #e2e8f0;
   width: 100%; 
@@ -243,6 +249,9 @@ const getFileName = (url: string) => {
     font-family: $font-text;
     font-size: 15px;
     color: #333;
+    
+    /* ВАЖНО: Это заставит обычные переносы строк \n тоже работать */
+    white-space: pre-line; 
 
     strong {
       font-weight: 700;
